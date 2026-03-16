@@ -299,7 +299,7 @@ CGS identifies 31% as high-risk — better delineating risk among patients deeme
 <div class="grid grid-cols-2 gap-4">
 <div>
 
-<img src="/images/fig2a-heatmap.svg" class="h-64 mx-auto" />
+<img src="/images/fig2a-heatmap.png" class="h-64 mx-auto" />
 
 </div>
 <div>
@@ -350,7 +350,7 @@ No single criterion dominates — each contributes independently to the 31% high
 
 ### Progression-Free Survival
 
-<img src="/images/fig1a-pfs-treatment.svg" class="h-48 mx-auto" />
+<img src="/images/fig1a-pfs-treatment.png" class="h-48 mx-auto" />
 
 PFS: p=0.69 (no difference)
 
@@ -359,7 +359,7 @@ PFS: p=0.69 (no difference)
 
 ### Overall Survival
 
-<img src="/images/fig1b-os-treatment.svg" class="h-48 mx-auto" />
+<img src="/images/fig1b-os-treatment.png" class="h-48 mx-auto" />
 
 OS: p=0.8 (no difference)
 
@@ -378,7 +378,7 @@ HR patients: DKRd 34% vs DVRd 27%. ASCT rate: SR 54% vs HR 46% (p=0.13). Compara
 
 ## PFS by Cytogenomic Stratification
 
-<img src="/images/fig2b-pfs-cgs.svg" class="h-64 mx-auto" />
+<img src="/images/fig2b-pfs-cgs.png" class="h-64 mx-auto" />
 
 <div class="grid grid-cols-2 gap-8">
 <div>
@@ -422,7 +422,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 <div class="grid grid-cols-2 gap-8">
 <div>
 
-<img src="/images/fig2c-pfs-iss.svg" class="h-64 mx-auto" />
+<img src="/images/fig2c-pfs-iss.png" class="h-64 mx-auto" />
 
 </div>
 <div>
@@ -448,7 +448,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 <div class="grid grid-cols-2 gap-8">
 <div>
 
-<img src="/images/fig2d-pfs-cgs-iss.svg" class="h-56 mx-auto" />
+<img src="/images/fig2d-pfs-cgs-iss.png" class="h-56 mx-auto" />
 
 </div>
 <div>
@@ -481,7 +481,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **TP53 Status (Figure 3A)**
 
-<img src="/images/fig3a-pfs-tp53.svg" class="h-48 mx-auto" />
+<img src="/images/fig3a-pfs-tp53.png" class="h-48 mx-auto" />
 
 - TP53 aberration: PFS **2.2y** vs **6.8y** (p<0.0001)
 - 14 TP53mut; 9 co-occurring with del(17p)
@@ -492,7 +492,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **del(17p) by CCF (Figure 3B)**
 
-<img src="/images/fig3b-pfs-del17p-ccf.svg" class="h-48 mx-auto" />
+<img src="/images/fig3b-pfs-del17p-ccf.png" class="h-48 mx-auto" />
 
 - del(17p) >20% CCF: shorter PFS
 - del(17p) ≤20% CCF: same as no del(17p)
@@ -512,7 +512,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **1q+ with IgH Translocation (Figure 3C)**
 
-<img src="/images/fig3c-pfs-1q-igh.svg" class="h-48 mx-auto" />
+<img src="/images/fig3c-pfs-1q-igh.png" class="h-48 mx-auto" />
 
 - 1q+ WITH IgH: PFS **2.0y**
 - 1q+ alone: PFS **3.6y**
@@ -523,7 +523,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **del(1p32) + 1q+ (Figure 3D)**
 
-<img src="/images/fig3d-pfs-del1p-1q.svg" class="h-48 mx-auto" />
+<img src="/images/fig3d-pfs-del1p-1q.png" class="h-48 mx-auto" />
 
 - del(1p) AND 1q+: PFS **2.7y**
 - Remainder: PFS **6.8y**, p=0.0068
@@ -542,7 +542,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **del(1p32) + IgH Translocation (Figure 3E)**
 
-<img src="/images/fig3e-pfs-del1p-igh.svg" class="h-48 mx-auto" />
+<img src="/images/fig3e-pfs-del1p-igh.png" class="h-48 mx-auto" />
 
 - del(1p32) alone: **no impact** on PFS
 - del(1p32) + IgH: approaching significance (p=0.063)
@@ -552,7 +552,7 @@ OS estimates remain immature given median follow-up of only 2.2 years. Longer fo
 
 **B2M Criterion (Figure 3F)**
 
-<img src="/images/fig3f-pfs-b2m.svg" class="h-48 mx-auto" />
+<img src="/images/fig3f-pfs-b2m.png" class="h-48 mx-auto" />
 
 - B2M ≥5.5 + normal Cr: PFS **2.6y** vs **6.8y**
 - **p = 0.00013**
@@ -847,4 +847,29 @@ Maclachlan KH, Tan CR, Korde N, Usmani SZ et al. — MSKCC Myeloma Service<br/>
 
 Thank you
 
-<!-- 這張投影片要強調：三個最重要的 take-home messages，讓聽眾記住 CGS 的臨床意義、MRD 與基因體風險的整合需求、以及基因體定序應成為常規檢查。提示下一頁：無，這是最後一頁。 -->
+<!-- 這張投影片要強調：三個最重要的 take-home messages，讓聽眾記住 CGS 的臨床意義、MRD 與基因體風險的整合需求、以及基因體定序應成為常規檢查。提示下一頁：接下來進入 Q&A 環節。 -->
+
+---
+layout: chapter
+---
+
+# Q & A
+
+Anticipated Discussion Questions
+
+<!-- 這張投影片要強調：以下是預期會被問到的問題與準備好的回答，幫助主持人引導討論。 -->
+
+---
+
+## Anticipated Questions
+
+| Question | TL;DR |
+|---|---|
+| **Q1: Why not extend R2-ISS?** | R2-ISS HR = 6% (too small for trials), no TP53mut, no co-occurrence. CGS is genomics-first, not an ISS upgrade. |
+| **Q2: Is 31% HR underestimated?** | Yes — only ~50% had NGS for TP53mut. Universal sequencing would likely push HR higher. |
+| **Q3: Why relapse despite MRDneg?** | 10⁻⁵ sensitivity ceiling, extramedullary disease missed, genomic instability drives subclonal evolution. MRDneg ≠ cured. |
+| **Q4: Single-center — generalizable?** | MSKCC referral bias exists. But CGS was defined by international consensus; this study validates, not defines. Multi-center studies planned. |
+| **Q5: Feasible outside academic centers?** | Mostly yes (FISH + B2M + Cr). Gaps: TP53mut needs NGS, t(14;20) non-routine. Even partial CGS improves over current practice. |
+| **Q6: Actionable now?** | (1) Add TP53mut testing, (2) evaluate co-occurrence not just single markers, (3) do NOT de-escalate HR patients even if MRDneg. |
+
+<!-- 六個預期問題的精簡版本，每題一句話回答。 -->

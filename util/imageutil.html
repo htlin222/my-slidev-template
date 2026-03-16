@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Utility</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: #16213e; border-bottom: 1px solid #0f3460; }
+header h1 { font-size: 18px; font-weight: 600; color: #e94560; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+header button { background: #0f3460; color: #e0e0e0; border: 1px solid #e94560; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+header button:hover { background: #e94560; color: #fff; }
+.container { display: flex; flex: 1; overflow: hidden; }
+
+/* Mode toggle */
+.mode-toggle { display: flex; border-radius: 4px; overflow: hidden; border: 1px solid #0f3460; }
+.mode-toggle button { border: none; padding: 6px 14px; font-size: 13px; cursor: pointer; background: #0f3460; color: #aaa; }
+.mode-toggle button.active { background: #e94560; color: #fff; }
+
+/* Sidebar */
+.sidebar { width: 240px; min-width: 240px; overflow-y: auto; background: #16213e; border-right: 1px solid #0f3460; padding: 8px; }
+.thumb-card { padding: 8px; margin-bottom: 6px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
+.thumb-card:hover { background: #1a1a3e; }
+.thumb-card.active { border-color: #e94560; background: #1a1a3e; }
+.thumb-card img { width: 100%; border-radius: 4px; background: #fff; }
+.thumb-card .meta { font-size: 11px; margin-top: 4px; color: #aaa; }
+.thumb-card .name { font-size: 12px; font-weight: 600; margin-top: 4px; word-break: break-all; }
+.badge { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-top: 2px; }
+.badge-line { background: #0f3460; color: #53a8e2; }
+.badge-unused { background: #3a1a1a; color: #e94560; }
+.badge-backup { background: #1a3a1a; color: #4ae945; }
+
+/* Main panel */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.img-container { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 16px; position: relative; }
+.img-container img { max-width: 100%; max-height: 100%; }
+.placeholder { color: #555; font-size: 16px; }
+
+/* Overlay canvas */
+.overlay-wrapper { position: relative; display: inline-block; }
+.overlay-wrapper img { display: block; max-width: 100%; max-height: calc(100vh - 160px); }
+.overlay-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; }
+
+/* Controls */
+.controls { padding: 12px 20px; background: #16213e; border-top: 1px solid #0f3460; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 52px; }
+.crop-info { font-size: 13px; color: #aaa; font-family: monospace; }
+.controls button { padding: 8px 18px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.btn-crop { background: #e94560; color: #fff; }
+.btn-crop:hover { background: #c73a52; }
+.btn-crop:disabled { background: #555; cursor: default; }
+.btn-restore { background: #0f3460; color: #e0e0e0; border: 1px solid #53a8e2; }
+.btn-restore:hover { background: #53a8e2; color: #fff; }
+.btn-restore:disabled { opacity: 0.3; cursor: default; }
+.btn-undo { background: #0f3460; color: #e0e0e0; border: 1px solid #e9a545; }
+.btn-undo:hover { background: #e9a545; color: #fff; }
+.btn-undo:disabled { opacity: 0.3; cursor: default; }
+.status { font-size: 12px; color: #4ae945; margin-left: auto; }
+.color-pick { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #aaa; }
+.color-pick input[type="color"] { width: 28px; height: 28px; border: 1px solid #0f3460; border-radius: 4px; cursor: pointer; background: none; padding: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Image Utility</h1>
+  <div class="header-right">
+    <div class="mode-toggle">
+      <button id="modeCrop" class="active" onclick="setMode('crop')">Crop</button>
+      <button id="modeOverlay" onclick="setMode('overlay')">Overlay</button>
+    </div>
+    <button onclick="loadAll()">Refresh</button>
+  </div>
+</header>
+<div class="container">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main">
+    <div class="img-container" id="imgContainer">
+      <span class="placeholder">Select an image from the gallery</span>
+    </div>
+    <div class="controls" id="controlsCrop">
+      <span class="crop-info" id="cropInfo">No crop selected</span>
+      <button class="btn-crop" id="btnCrop" disabled onclick="applyCrop()">Apply Crop</button>
+      <button class="btn-restore" id="btnRestore" disabled onclick="restoreOriginal()">Restore Original</button>
+      <span class="status" id="status"></span>
+    </div>
+    <div class="controls" id="controlsOverlay" style="display:none">
+      <div class="color-pick">
+        <label>Fill:</label>
+        <input type="color" id="overlayColor" value="#ffffff">
+      </div>
+      <span class="crop-info" id="overlayInfo">Draw rectangles on the image</span>
+      <button class="btn-undo" id="btnUndo" disabled onclick="undoOverlay()">Undo</button>
+      <button class="btn-crop" id="btnApplyOverlay" disabled onclick="applyOverlay()">Apply Overlay</button>
+      <button class="btn-restore" id="btnRestoreOv" disabled onclick="restoreOriginal()">Restore Original</button>
+      <span class="status" id="statusOv"></span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script>
+let images = [], slideRefs = {}, cropper = null, currentImage = null, currentIndex = -1;
+let mode = 'crop'; // 'crop' | 'overlay'
+let overlayRects = []; // [{x, y, w, h}] in image-pixel coords
+let ovDragging = false, ovStartX = 0, ovStartY = 0;
+let ovImg = null; // the <img> in overlay mode
+
+async function loadAll() {
+  const [imgRes, slideRes] = await Promise.all([
+    fetch('/api/images').then(r => r.json()),
+    fetch('/api/slides').then(r => r.json())
+  ]);
+  images = imgRes;
+  slideRefs = {};
+  slideRes.forEach(r => { slideRefs[r.filename] = r; });
+  renderSidebar();
+  if (currentImage) {
+    const still = images.find(i => i.name === currentImage.name);
+    if (still) selectImage(still);
+  }
+}
+
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = images.map((img, i) => {
+    const ref = slideRefs[img.name];
+    const active = currentImage && currentImage.name === img.name ? 'active' : '';
+    return `<div class="thumb-card ${active}" data-name="${img.name}">
+      <img src="/api/image/${img.name}" loading="lazy">
+      <div class="name">${img.name}</div>
+      <div class="meta">${img.width}&times;${img.height} &middot; ${(img.size/1024).toFixed(0)}KB</div>
+      ${ref ? `<span class="badge badge-line">L${ref.line}</span>` : `<span class="badge badge-unused">unused</span>`}
+      ${img.hasBackup ? `<span class="badge badge-backup">backup</span>` : ''}
+    </div>`;
+  }).join('');
+  sb.querySelectorAll('.thumb-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const img = images.find(i => i.name === card.dataset.name);
+      if (img) selectImage(img);
+    });
+  });
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeCrop').classList.toggle('active', m === 'crop');
+  document.getElementById('modeOverlay').classList.toggle('active', m === 'overlay');
+  document.getElementById('controlsCrop').style.display = m === 'crop' ? 'flex' : 'none';
+  document.getElementById('controlsOverlay').style.display = m === 'overlay' ? 'flex' : 'none';
+  if (currentImage) selectImage(currentImage);
+}
+
+function selectImage(img) {
+  if (!img || !img.name) return;
+  currentImage = img;
+  currentIndex = images.indexOf(img);
+  if (cropper) { cropper.destroy(); cropper = null; }
+  overlayRects = [];
+
+  const container = document.getElementById('imgContainer');
+
+  if (mode === 'crop') {
+    container.innerHTML = `<img id="cropImg" src="/api/image/${img.name}?t=${Date.now()}">`;
+    const el = document.getElementById('cropImg');
+    el.onload = () => {
+      cropper = new Cropper(el, {
+        viewMode: 1,
+        autoCrop: false,
+        zoomable: true,
+        background: false,
+        crop(e) {
+          const d = e.detail;
+          document.getElementById('cropInfo').textContent =
+            `x:${Math.round(d.x)} y:${Math.round(d.y)}  ${Math.round(d.width)}\u00d7${Math.round(d.height)}`;
+          document.getElementById('btnCrop').disabled = false;
+        }
+      });
+    };
+    document.getElementById('btnCrop').disabled = true;
+    document.getElementById('btnRestore').disabled = !img.hasBackup;
+    document.getElementById('cropInfo').textContent = 'Draw a crop region';
+    document.getElementById('status').textContent = '';
+  } else {
+    // Overlay mode
+    container.innerHTML = `<div class="overlay-wrapper" id="ovWrapper">
+      <img id="ovImg" src="/api/image/${img.name}?t=${Date.now()}">
+      <canvas class="overlay-canvas" id="ovCanvas"></canvas>
+    </div>`;
+    ovImg = document.getElementById('ovImg');
+    const canvas = document.getElementById('ovCanvas');
+    const ctx = canvas.getContext('2d');
+
+    ovImg.onload = () => {
+      canvas.width = ovImg.naturalWidth;
+      canvas.height = ovImg.naturalHeight;
+      redrawOverlay();
+    };
+
+    canvas.addEventListener('mousedown', ovMouseDown);
+    canvas.addEventListener('mousemove', ovMouseMove);
+    canvas.addEventListener('mouseup', ovMouseUp);
+    canvas.addEventListener('mouseleave', ovMouseUp);
+
+    document.getElementById('btnApplyOverlay').disabled = true;
+    document.getElementById('btnUndo').disabled = true;
+    document.getElementById('btnRestoreOv').disabled = !img.hasBackup;
+    document.getElementById('overlayInfo').textContent = 'Draw rectangles on the image';
+    document.getElementById('statusOv').textContent = '';
+  }
+
+  renderSidebar();
+}
+
+// --- Overlay drawing ---
+function ovMouseDown(e) {
+  ovDragging = true;
+  const r = e.target.getBoundingClientRect();
+  ovStartX = e.clientX - r.left;
+  ovStartY = e.clientY - r.top;
+}
+
+function ovMouseMove(e) {
+  if (!ovDragging) return;
+  const canvas = document.getElementById('ovCanvas');
+  const r = canvas.getBoundingClientRect();
+  const cx = e.clientX - r.left;
+  const cy = e.clientY - r.top;
+  redrawOverlay();
+  // Draw preview rect
+  const ctx = canvas.getContext('2d');
+  const scaleX = canvas.width / r.width;
+  const scaleY = canvas.height / r.height;
+  const color = document.getElementById('overlayColor').value;
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.5;
+  ctx.fillRect(ovStartX * scaleX, ovStartY * scaleY, (cx - ovStartX) * scaleX, (cy - ovStartY) * scaleY);
+  ctx.globalAlpha = 1.0;
+  // Info
+  const w = Math.abs(Math.round((cx - ovStartX) * scaleX));
+  const h = Math.abs(Math.round((cy - ovStartY) * scaleY));
+  document.getElementById('overlayInfo').textContent = `Drawing: ${w}\u00d7${h}`;
+}
+
+function ovMouseUp(e) {
+  if (!ovDragging) return;
+  ovDragging = false;
+  const canvas = document.getElementById('ovCanvas');
+  const r = canvas.getBoundingClientRect();
+  const cx = e.clientX - r.left;
+  const cy = e.clientY - r.top;
+  const scaleX = canvas.width / r.width;
+  const scaleY = canvas.height / r.height;
+  const x1 = Math.min(ovStartX, cx) * scaleX;
+  const y1 = Math.min(ovStartY, cy) * scaleY;
+  const w = Math.abs(cx - ovStartX) * scaleX;
+  const h = Math.abs(cy - ovStartY) * scaleY;
+  // Ignore tiny drags (clicks)
+  if (w < 5 && h < 5) { redrawOverlay(); return; }
+  const color = document.getElementById('overlayColor').value;
+  overlayRects.push({ x: x1, y: y1, w, h, color });
+  redrawOverlay();
+  document.getElementById('btnApplyOverlay').disabled = false;
+  document.getElementById('btnUndo').disabled = false;
+  document.getElementById('overlayInfo').textContent = `${overlayRects.length} overlay(s) — ${Math.round(w)}\u00d7${Math.round(h)}`;
+}
+
+function redrawOverlay() {
+  const canvas = document.getElementById('ovCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const r of overlayRects) {
+    ctx.fillStyle = r.color;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+  }
+}
+
+function undoOverlay() {
+  overlayRects.pop();
+  redrawOverlay();
+  document.getElementById('btnUndo').disabled = overlayRects.length === 0;
+  document.getElementById('btnApplyOverlay').disabled = overlayRects.length === 0;
+  document.getElementById('overlayInfo').textContent = overlayRects.length
+    ? `${overlayRects.length} overlay(s)` : 'Draw rectangles on the image';
+}
+
+async function applyOverlay() {
+  if (!currentImage || !ovImg || overlayRects.length === 0) return;
+  // Composite: draw original image + overlay rects onto a canvas
+  const c = document.createElement('canvas');
+  c.width = ovImg.naturalWidth;
+  c.height = ovImg.naturalHeight;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(ovImg, 0, 0);
+  for (const r of overlayRects) {
+    ctx.fillStyle = r.color;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+  }
+  const dataUrl = c.toDataURL('image/png');
+  setStatusOv('Saving...');
+  const res = await fetch('/api/crop', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: currentImage.name, imageData: dataUrl })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    setStatusOv('Overlay applied & saved!');
+    overlayRects = [];
+    await loadAll();
+  } else {
+    setStatusOv('Error: ' + (data.error || 'unknown'));
+  }
+}
+
+// --- Crop mode ---
+async function applyCrop() {
+  if (!cropper || !currentImage) return;
+  const canvas = cropper.getCroppedCanvas({ imageSmoothingEnabled: true, imageSmoothingQuality: 'high' });
+  const dataUrl = canvas.toDataURL('image/png');
+  setStatus('Saving...');
+  const res = await fetch('/api/crop', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: currentImage.name, imageData: dataUrl })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    setStatus('Cropped & saved!');
+    await loadAll();
+  } else {
+    setStatus('Error: ' + (data.error || 'unknown'));
+  }
+}
+
+async function restoreOriginal() {
+  if (!currentImage) return;
+  const statusEl = mode === 'crop' ? 'status' : 'statusOv';
+  setStatusEl(statusEl, 'Restoring...');
+  const res = await fetch('/api/restore', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename: currentImage.name })
+  });
+  const data = await res.json();
+  if (data.ok) {
+    setStatusEl(statusEl, 'Restored from backup!');
+    overlayRects = [];
+    await loadAll();
+  } else {
+    setStatusEl(statusEl, 'Error: ' + (data.error || 'unknown'));
+  }
+}
+
+function setStatus(msg) { setStatusEl('status', msg); }
+function setStatusOv(msg) { setStatusEl('statusOv', msg); }
+function setStatusEl(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 3000);
+}
+
+document.addEventListener('keydown', e => {
+  if (!images.length) return;
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    e.preventDefault();
+    const next = e.key === 'ArrowLeft'
+      ? (currentIndex - 1 + images.length) % images.length
+      : (currentIndex + 1) % images.length;
+    selectImage(images[next]);
+  }
+  // Ctrl+Z for undo overlay
+  if (mode === 'overlay' && e.key === 'z' && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault();
+    undoOverlay();
+  }
+});
+
+loadAll();
+</script>
+</body>
+</html>
