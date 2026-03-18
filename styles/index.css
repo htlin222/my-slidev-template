@@ -60,6 +60,32 @@
 	font-size: 20px;
 }
 
+/* Inline icon badge: rounded border with padding */
+.slidev-layout .icon-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3px 5px;
+	background: #3d6869;
+	color: #fff;
+	border-radius: 6px;
+	font-size: 0.7em;
+	vertical-align: 0px;
+	animation: popIn 0.3s ease-out backwards;
+	animation-delay: var(--delay);
+}
+
+@keyframes popIn {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
 /* Fade (dissolve) transition: 0.5s duration */
 .fade-enter-active,
 .fade-leave-active {

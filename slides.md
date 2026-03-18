@@ -33,12 +33,16 @@ Maclachlan KH, Tan CR, Usmani SZ et al. — Blood Advances 2025
 
 ---
 
+<script setup>
+import { Dna, ShieldAlert, Target, Pill } from 'lucide-vue-next'
+</script>
+
 ## Multiple Myeloma Overview
 
-- **Newly diagnosed multiple myeloma (NDMM)**: clonal plasma cell neoplasm, ~35,000 new cases/year in the US
-- Heterogeneous disease driven by genomic aberrations
-- **Risk stratification** is central to treatment decisions and clinical trial design
-- Current SOC: daratumumab-based quadruplet induction therapy
+- <span class="icon-badge"><Dna size="1em" /></span> **Newly diagnosed multiple myeloma (NDMM)**: clonal plasma cell neoplasm, ~35,000 new cases/year in the US
+- <span class="icon-badge"><Dna size="1em" /></span> Heterogeneous disease driven by genomic aberrations
+- <span class="icon-badge"><ShieldAlert size="1em" /></span> **Risk stratification** is central to treatment decisions and clinical trial design
+- <span class="icon-badge"><Pill size="1em" /></span> Current SOC: daratumumab-based quadruplet induction therapy
 
 > Genomic aberrations determine disease biology, yet prior staging systems have not fully incorporated this information.
 
