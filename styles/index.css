@@ -12,9 +12,15 @@
 	color: #3d6869;
 }
 
+.slidev-layout h1 {
+	font-size: 2.5rem;
+	line-height: 1.1;
+}
+
 .slidev-layout h2 {
 	font-weight: 700;
 	margin-top: 18px;
+	margin-bottom: 1rem;
 }
 
 /* Strong/bold items in lists get teal color */
@@ -29,7 +35,7 @@
 
 .slidev-layout p,
 .slidev-layout li {
-	font-size: 18px;
+	font-size: 20px;
 }
 
 /* Fade (dissolve) transition: 0.5s duration */
@@ -49,6 +55,112 @@
 .slidev-layout tr th {
 	padding-top: 3px;
 	padding-bottom: 3px;
+}
+
+/* Thicker bottom border on table header */
+.slidev-layout th {
+	border-bottom: 2px solid #e5e7eb;
+}
+
+/* Bold first column */
+.slidev-layout td:first-child {
+	font-weight: 700;
+}
+
+/* Chapter layout */
+.section-layout {
+	position: absolute;
+	inset: 0;
+	background: #fff;
+	overflow: hidden;
+	font-family: "Source Sans Pro", sans-serif;
+}
+
+.section-label {
+	position: absolute;
+	top: 54px;
+	left: 60px;
+	background: #3d6869;
+	color: #fff;
+	font-weight: 700;
+	font-size: 13px;
+	padding: 6px 16px;
+	border-radius: 2px;
+}
+
+.section-content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 4px;
+	display: flex;
+	align-items: center;
+	padding-left: 60px;
+}
+
+.chapter-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.chapter-item {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 8px 0;
+	color: #b0b0b0;
+	font-size: 20px;
+	font-weight: 400;
+	transition:
+		color 0.2s,
+		font-size 0.2s,
+		font-weight 0.2s;
+	cursor: pointer;
+}
+
+.chapter-item:not(.active):hover {
+	color: #777;
+}
+
+.chapter-item.active {
+	color: #3d6869;
+	font-size: 34px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+
+.chapter-number {
+	min-width: 28px;
+	text-align: right;
+}
+
+/* Blockquote as callout box */
+.slidev-layout blockquote {
+	margin-top: 0.5rem;
+	padding: 0.75rem;
+	background: #f0fdfa;
+	border-left: 3px solid #3d6869;
+	border-radius: 0.5rem;
+	color: #134e4a;
+}
+
+.slidev-layout blockquote p {
+	font-size: 16px;
+	margin: 0;
+}
+
+/* Fixed-position citation: use <cite> tag */
+.slidev-layout cite {
+	position: fixed;
+	left: 50px;
+	bottom: 14px;
+	font-style: italic;
+	font-size: 12px;
+	line-height: 1.2;
+	color: #666;
+	display: block;
 }
 
 /* h3 breadcrumb: small text above h3 showing parent h2 title */
