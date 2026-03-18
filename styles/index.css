@@ -169,7 +169,8 @@
 
 /* Blockquote as callout box, pushed to bottom of remaining space */
 .slidev-layout blockquote {
-	margin-top: auto;
+	margin-top: 20px;
+	margin-left: 8px;
 	margin-bottom: auto;
 	padding: 0.75rem;
 	background: #ecedef;
@@ -177,6 +178,11 @@
 	box-shadow: -8px 0 0 0 #3d6869;
 	border-radius: 0;
 	color: #134e4a;
+}
+
+/* In default layout (flex column), push blockquote to bottom */
+.slidev-layout.default > blockquote {
+	margin-top: auto;
 }
 
 .slidev-layout blockquote p {
