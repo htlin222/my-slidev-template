@@ -1,9 +1,16 @@
 <script setup>
-import { computed } from 'vue'
-import { useNav } from '@slidev/client'
+import { computed, inject } from 'vue'
 import { slides } from '#slidev/slides'
 
-const { currentSlideNo, go } = useNav()
+/**
+ * Use inject to get the Slidev context instead of useNav().
+ * useNav() is a shared singleton that always returns the global router-based nav.
+ * In print mode, each slide's PrintSlideClick provides a per-slide nav via
+ * provideLocal — inject picks that up so page numbers are correct per slide.
+ */
+const ctx = inject('$$slidev-context')
+const currentSlideNo = computed(() => ctx.nav.currentSlideNo)
+const total = computed(() => ctx.nav.total)
 
 /** Dynamically compute chapters from h1 slides (skip slide 1 = cover) */
 const chapters = computed(() => {
@@ -19,10 +26,10 @@ const chapters = computed(() => {
     }
   }
 
-  const total = allSlides.length
+  const slideTotal = allSlides.length
   return h1Slides.map((ch, i) => ({
     ...ch,
-    end: i < h1Slides.length - 1 ? h1Slides[i + 1].start - 1 : total,
+    end: i < h1Slides.length - 1 ? h1Slides[i + 1].start - 1 : slideTotal,
   }))
 })
 
@@ -52,7 +59,7 @@ const navVisible = computed(() => {
 const bottomVisible = computed(() => currentSlideNo.value !== 1)
 
 function navigateTo(slideNo) {
-  go(slideNo)
+  ctx.nav.go(slideNo)
 }
 </script>
 
@@ -70,12 +77,12 @@ function navigateTo(slideNo) {
 
   <div v-if="bottomVisible" class="bottom-decorations">
     <div class="page-number">
-      {{ $slidev.nav.currentSlideNo }} / {{ $slidev.nav.total }}
+      {{ currentSlideNo }} / {{ total }}
     </div>
     <div class="progress-track">
       <div
         class="progress-fill"
-        :style="{ width: `${($slidev.nav.currentSlideNo / $slidev.nav.total) * 100}%` }"
+        :style="{ width: `${(currentSlideNo / total) * 100}%` }"
       ></div>
     </div>
   </div>
@@ -83,7 +90,7 @@ function navigateTo(slideNo) {
 
 <style scoped>
 .nav-bar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -123,6 +130,10 @@ function navigateTo(slideNo) {
 }
 
 .bottom-decorations {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   pointer-events: none;
 }
 

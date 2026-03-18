@@ -108,8 +108,8 @@
 	background: #3d6869;
 	color: #fff;
 	font-weight: 700;
-	font-size: 13px;
-	padding: 6px 16px;
+	font-size: 16px;
+	padding: 4px 14px;
 	border-radius: 2px;
 }
 
@@ -136,7 +136,7 @@
 	gap: 10px;
 	padding: 8px 0;
 	color: #b0b0b0;
-	font-size: 20px;
+	font-size: 26px;
 	font-weight: 400;
 	transition:
 		color 0.2s,
@@ -187,7 +187,7 @@
 
 /* Fixed-position citation: use <cite> tag */
 .slidev-layout cite {
-	position: fixed;
+	position: absolute;
 	left: 50px;
 	bottom: 14px;
 	font-style: italic;
@@ -195,6 +195,105 @@
 	line-height: 1.2;
 	color: #666;
 	display: block;
+}
+
+/* Cover layout */
+.cover-layout {
+	position: absolute;
+	inset: 0;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	padding: 70px 60px 40px 50px;
+	overflow: hidden;
+	font-family: "Source Sans Pro", sans-serif;
+	border-left: 30px solid #3d6869;
+}
+
+.cover-top {
+	position: absolute;
+	top: 40px;
+	left: 50px;
+	right: 50px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.cover-layout .series-label {
+	background: #3d6869;
+	color: #fff;
+	font-weight: 700;
+	font-size: 18px;
+	padding: 4px 14px;
+	line-height: 1.3;
+	border-radius: 2px;
+}
+
+.cover-date {
+	color: #888;
+	font-size: 16px;
+	line-height: 1.3;
+	padding-top: 6px;
+}
+
+.cover-center {
+	text-align: left;
+	max-width: 95%;
+}
+
+.cover-center h1 {
+	color: #3d6869;
+	font-size: 2.8em;
+	font-weight: 800;
+	line-height: 1.2;
+	margin: 0;
+}
+
+.cover-center p {
+	color: #666;
+	font-size: 1.1em;
+	margin-top: 12px;
+}
+
+.cover-separator {
+	width: 80%;
+	border-top: 2px dotted #ccc;
+	margin: 28px 0;
+}
+
+.cover-author-row {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+
+.cover-author-name {
+	font-weight: 700;
+	font-size: 24px;
+	color: #374151;
+}
+
+.cover-author-affiliation {
+	font-size: 16px;
+	color: #666;
+}
+
+.cover-author-email {
+	font-size: 16px;
+	color: #666;
+}
+
+.cover-cc {
+	position: absolute;
+	bottom: 20px;
+	right: 40px;
+	font-size: 11px;
+	color: #aaa;
+	letter-spacing: 0.5px;
 }
 
 /* h3 breadcrumb: small text above h3 showing parent h2 title */

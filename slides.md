@@ -10,7 +10,8 @@ colorSchema: light
 layout: my-cover
 seriesName: IMS-IMWG 2025
 date: "2026-03-16"
-author: Journal Club Presenter
+author: 林協霆 Hsieh-Ting Lin
+affiliation: 和信治癌中心醫院 腫瘤內科部
 email: ""
 ---
 
