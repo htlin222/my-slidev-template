@@ -136,18 +136,27 @@
 	text-align: right;
 }
 
-/* Blockquote as callout box */
+/* Make default layout a flex column so blockquote can push to bottom */
+.slidev-layout.default {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Blockquote as callout box, pushed to bottom of remaining space */
 .slidev-layout blockquote {
-	margin-top: 0.5rem;
+	margin-top: auto;
+	margin-bottom: auto;
 	padding: 0.75rem;
-	background: #f0fdfa;
-	border-left: 3px solid #3d6869;
-	border-radius: 0.5rem;
+	background: #ecedef;
+	border-left: 3px solid #9ca3af;
+	box-shadow: -8px 0 0 0 #3d6869;
+	border-radius: 0;
 	color: #134e4a;
 }
 
 .slidev-layout blockquote p {
-	font-size: 16px;
+	font-size: 18px;
+	font-weight: 700;
 	margin: 0;
 }
 
