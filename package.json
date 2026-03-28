@@ -1,7 +1,7 @@
 {
-	"name": "my-slidev-demo",
+	"name": "slidev-template",
 	"version": "1.0.0",
-	"description": "",
+	"description": "A reusable Slidev presentation template with custom layouts and Chart.js components",
 	"main": "index.js",
 	"scripts": {
 		"dev": "NODE_OPTIONS='--dns-result-order=ipv4first' slidev",
