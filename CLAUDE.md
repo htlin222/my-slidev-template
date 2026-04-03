@@ -2,9 +2,8 @@
 
 ## Dev Server
 
-- Tailscale Funnel: `tailscale funnel --set-path=/ims-imwg-2025 3030`
-- URL: `https://hsieh-tingmac-mini.tail33af84.ts.net/ims-imwg-2025/`
-- `vite.config.ts` sets `base: '/ims-imwg-2025/'` to match the funnel path
+- `vite.config.ts` reads `SLIDEV_BASE` env var for base path (defaults to `/`)
+- For Tailscale Funnel: set `SLIDEV_BASE=/<project-name>/` and run `tailscale funnel --set-path=/<project-name> 3030`
 - `vite.config.ts`: `server.allowedHosts` includes the Tailscale hostname
 - `NODE_OPTIONS='--dns-result-order=ipv4first'` in the dev script forces IPv4 binding (Node/Vite defaults to IPv6 `[::1]` which Tailscale Funnel can't reach)
 
@@ -14,7 +13,7 @@
 
 ### Workflow
 
-1. **Segment**: Split the target section(s) into temp files under `/tmp/ims-imwg-2025/partNN.md` (e.g., `part01.md`, `part02.md`, …)
+1. **Segment**: Split the target section(s) into temp files under `/tmp/<project-name>/partNN.md` (e.g., `part01.md`, `part02.md`, …)
 2. **Delegate**: Spawn Task subagents per segment — each agent edits only its own part file
 3. **Research**: Subagents use `WebSearch` / `WebFetch` to find evidence-based data (trial results, survival stats, guidelines)
 4. **Cite (AMA + DOI)**: All references must use AMA citation format with DOI. Validate DOIs via `https://api.crossref.org/works/{DOI}` before including
@@ -39,7 +38,7 @@ curl -s -o /dev/null -w "%{http_code}" "https://api.crossref.org/works/10.1234/e
 - Each subagent receives: section boundaries (slide `---` delimiters), context of adjacent slides, and the research brief
 - Subagents must NOT modify content outside their assigned section
 - Prefer `Edit` over `Write` when touching `slides.md` — surgical changes only
-- Temp dir: `/tmp/ims-imwg-2025/` (create if not exists)
+- Temp dir: `/tmp/<project-name>/` (derive from repo directory name; create if not exists)
 
 ## Slide Density Limits
 

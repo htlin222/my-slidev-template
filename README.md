@@ -18,22 +18,18 @@ A reusable [Slidev](https://sli.dev) presentation template with custom layouts, 
 
 Click **"Use this template"** on GitHub to create a new repo, then:
 
-1. Update the `base` path in `vite.config.ts` to match your project name:
-
-   ```ts
-   export default defineConfig({
-     base: '/your-project-name/',  // ← change this
-   })
-   ```
-
-2. Install dependencies and start the dev server:
-
-   ```bash
-   pnpm install
-   pnpm dev
-   ```
+```bash
+pnpm install
+pnpm dev
+```
 
 The dev server starts at `http://localhost:3030`.
+
+> **Base path** is handled automatically — the GitHub Pages deploy workflow sets it from the repo name. For local dev with a subpath (e.g., Tailscale Funnel), set the env var:
+>
+> ```bash
+> SLIDEV_BASE=/your-project-name/ pnpm dev
+> ```
 
 ## Features
 
@@ -136,8 +132,8 @@ email: you@example.com
 
 To serve over HTTPS for remote access:
 
-1. Set `base` in `vite.config.ts` to match your funnel path
-2. Add your Tailscale hostname to `server.allowedHosts`
+1. Add your Tailscale hostname to `server.allowedHosts` in `vite.config.ts`
+2. Start dev with the base path: `SLIDEV_BASE=/<path>/ pnpm dev`
 3. Run: `tailscale funnel --set-path=/<path> 3030`
 
 ## License
