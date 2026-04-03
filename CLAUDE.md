@@ -2,11 +2,11 @@
 
 ## Dev Server
 
-- `vite.config.ts` reads `SLIDEV_BASE` env var for base path (defaults to `/`)
-- For Tailscale Funnel: set `SLIDEV_BASE=/<project-name>/` and run `tailscale funnel --set-path=/<project-name> 3030`
-- `vite.config.ts`: `server.allowedHosts` includes the Tailscale hostname
-- `NODE_OPTIONS='--dns-result-order=ipv4first'` in the dev script forces IPv4 binding (Node/Vite defaults to IPv6 `[::1]` which Tailscale Funnel can't reach)
-- `pnpm presenter` enables multi-device sync via WebSocket (`--remote` flag); presenter view at `/presenter` route
+- `vite.config.ts` only sets `allowedHosts` (auto-detected from Tailscale) — no `base`, `port`, or `host`
+- `NODE_OPTIONS='--dns-result-order=ipv4first'` in the dev script forces IPv4 binding
+- `--remote` flag (in `pnpm presenter`) binds to `0.0.0.0` and enables multi-device sync
+- For Tailscale Funnel: `make serve` (terminal 1) + `make funnel` (terminal 2)
+- Slides at `/`, presenter at `/presenter/`
 
 ## Large-File Editing Strategy (slides.md)
 

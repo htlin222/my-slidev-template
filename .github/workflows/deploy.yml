@@ -29,7 +29,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm build --base /${{ github.event.repository.name }}/
+      - run: |
+          SLUG=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g; s/^-\|-$//g')
+          pnpm build --base /${SLUG}/
 
       - uses: actions/upload-pages-artifact@v3
         with:
