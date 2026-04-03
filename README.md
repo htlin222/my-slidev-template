@@ -125,15 +125,34 @@ email: you@example.com
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start dev server at localhost:3030 |
+| `pnpm presenter` | Start dev server with multi-device presenter sync |
 | `pnpm build` | Build static SPA to `dist/` |
 | `pnpm export` | Export slides to PDF |
+
+## Presenter Mode (Multi-Device Sync)
+
+`pnpm presenter` starts the dev server with `--remote`, enabling WebSocket sync between devices — speaker notes on your laptop, slides on the projector.
+
+| View | URL |
+|------|-----|
+| Audience (slides) | `http://localhost:3030/` |
+| Presenter (notes) | `http://localhost:3030/presenter` |
+
+With Tailscale Funnel, both are accessible from any device:
+
+| View | URL |
+|------|-----|
+| Audience | `https://<tailscale-host>/<base-path>/` |
+| Presenter | `https://<tailscale-host>/<base-path>/presenter` |
+
+> **Note:** `<base-path>` must match both `SLIDEV_BASE` and `tailscale funnel --set-path`. GitHub Pages static builds do NOT support multi-device sync.
 
 ## Tailscale Funnel Setup
 
 To serve over HTTPS for remote access:
 
 1. Add your Tailscale hostname to `server.allowedHosts` in `vite.config.ts`
-2. Start dev with the base path: `SLIDEV_BASE=/<path>/ pnpm dev`
+2. Start with the base path: `SLIDEV_BASE=/<path>/ pnpm presenter`
 3. Run: `tailscale funnel --set-path=/<path> 3030`
 
 ## License
