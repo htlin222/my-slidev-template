@@ -339,6 +339,12 @@
 	letter-spacing: 0.5px;
 }
 
+/* Center mermaid diagrams horizontally */
+.slidev-layout .mermaid {
+  display: flex;
+  justify-content: center;
+}
+
 /* h3 breadcrumb: small text above h3 showing parent h2 title */
 .slidev-layout .h2-ref {
 	display: block;

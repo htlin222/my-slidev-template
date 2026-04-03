@@ -18,10 +18,20 @@ A reusable [Slidev](https://sli.dev) presentation template with custom layouts, 
 
 Click **"Use this template"** on GitHub to create a new repo, then:
 
-```bash
-pnpm install
-pnpm dev
-```
+1. Update the `base` path in `vite.config.ts` to match your project name:
+
+   ```ts
+   export default defineConfig({
+     base: '/your-project-name/',  // ← change this
+   })
+   ```
+
+2. Install dependencies and start the dev server:
+
+   ```bash
+   pnpm install
+   pnpm dev
+   ```
 
 The dev server starts at `http://localhost:3030`.
 
