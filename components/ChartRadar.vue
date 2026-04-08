@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Radar } from 'vue-chartjs'
+import { computed } from "vue";
+import { Radar } from "vue-chartjs";
 import {
   Chart as ChartJS,
   Title,
@@ -10,26 +10,37 @@ import {
   PointElement,
   LineElement,
   Filler,
-} from 'chart.js'
+} from "chart.js";
 
-ChartJS.register(Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, Filler)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+);
 
-const props = withDefaults(defineProps<{
-  labels?: string[]
-  datasets?: Array<{
-    label: string
-    data: number[]
-    borderColor?: string
-    backgroundColor?: string
-  }>
-  title?: string
-}>(), {
-  labels: () => ['Speed', 'Power', 'Defense', 'Range', 'Accuracy'],
-  datasets: () => [{ label: 'Series 1', data: [80, 60, 70, 90, 75] }],
-  title: '',
-})
+const props = withDefaults(
+  defineProps<{
+    labels?: string[];
+    datasets?: Array<{
+      label: string;
+      data: number[];
+      borderColor?: string;
+      backgroundColor?: string;
+    }>;
+    title?: string;
+  }>(),
+  {
+    labels: () => ["Speed", "Power", "Defense", "Range", "Accuracy"],
+    datasets: () => [{ label: "Series 1", data: [80, 60, 70, 90, 75] }],
+    title: "",
+  },
+);
 
-const palette = ['#3D6869', '#E07A5F', '#5B9A9C', '#F2CC8F', '#81B29A']
+const palette = ["#3D6869", "#E07A5F", "#5B9A9C", "#F2CC8F", "#81B29A"];
 
 const chartData = computed(() => ({
   labels: props.labels,
@@ -39,12 +50,13 @@ const chartData = computed(() => ({
     backgroundColor: ds.backgroundColor ?? `${palette[i % palette.length]}33`,
     pointBackgroundColor: ds.borderColor ?? palette[i % palette.length],
   })),
-}))
+}));
 
 const chartOptions = computed(() => ({
   responsive: true,
   maintainAspectRatio: true,
   devicePixelRatio: 2,
+  animation: false,
   plugins: {
     title: { display: !!props.title, text: props.title },
     legend: { display: props.datasets.length > 1 },
@@ -52,7 +64,7 @@ const chartOptions = computed(() => ({
   scales: {
     r: { beginAtZero: true },
   },
-}))
+}));
 </script>
 
 <template>
