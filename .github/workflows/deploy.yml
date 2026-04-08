@@ -31,7 +31,7 @@ jobs:
 
       - run: |
           SLUG=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g; s/^-\|-$//g')
-          pnpm build --base /${SLUG}/
+          SLIDEV_BASE="/${SLUG}/" pnpm build
 
       - uses: actions/upload-pages-artifact@v3
         with:
